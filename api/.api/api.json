@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "cequens-api",
+      "source": "@cequens-api/v2#fpuy02gl7eqdf30",
+      "integrity": "sha512-SxPzYQEi/ToCjh07b9A76q0V9m5SmAg9WxcFVcZBaD84gdRlWBs5Np7BBny7XebHklsYlqAlkXGQiYAHHYvi6Q==",
+      "installerVersion": "6.1.1"
+    }
+  ]
+}

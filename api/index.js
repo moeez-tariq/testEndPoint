@@ -3,7 +3,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const sdk = require('@api/cequens-api');
+// const sdk = require('@api/cequens-api');
+const request = require('request');
 require('dotenv').config();
 
 
@@ -12,8 +13,8 @@ const port = 3000;
 
 let messageList = [];
 
-const authToken = process.env.AUTH_TOKEN;
-sdk.auth(authToken);
+// const authToken = process.env.AUTH_TOKEN;
+// sdk.auth(authToken);
 
 
 app.use(bodyParser.json());
@@ -32,27 +33,60 @@ app.post('/webhook', (req, res) => {
         wa_id = '+' + wa_id;
         messageList.push({ "name":name, "wa_id":wa_id, "timestamp":timestamp, "body":body });
 
-        sdk.sendingTemplateMessage({
-            recipient_type: 'individual',
-            type: 'template',
-            template: {
-                language: { policy: 'deterministic', code: 'en' },
-                namespace: '841f4fb9_7e40_4764_b06a_6c323ebba684',
-                components: [{ type: 'body', parameters: [] }],
-                name: 'test_template_101'
+        const options = {
+            method: 'POST',
+            url: 'https://apis.cequens.com/conversation/wab/v1/messages/',
+            headers: {
+                accept: 'application/json',
+                'content-type': 'application/json',
+                Authorization: `Bearer ${process.env.AUTH_TOKEN}`
             },
-            to: wa_id,
-        })
-        .then(({ data }) => {
-            console.log(`Template message sent successfully to ${name} (${wa_id})`);
-            console.log(data);
-        })
-        .catch(err => {
-            console.error(`Failed to send template message to ${name} (${wa_id})`);
-            console.error(err);
+            body: {
+                recipient_type: 'individual',
+                type: 'template',
+                template: {
+                    language: { policy: 'deterministic', code: 'en' },
+                    namespace: '841f4fb9_7e40_4764_b06a_6c323ebba684',
+                    components: [{ type: 'body', parameters: [] }],
+                    name: 'test_template_101'
+                },
+                to: wa_id
+            },
+            json: true
+        };
+
+        // Send request to Cequens API
+        request(options, function (error, response, body) {
+            if (error) {
+                console.error('Error sending template message:', error);
+                res.status(500).send('Failed to send template message');
+            } else {
+                console.log('Template message sent successfully:', body);
+                res.status(200).send('Message received and template message sent');
+            }
         });
 
-        res.status(200).send('Message received successfully');
+        // sdk.sendingTemplateMessage({
+        //     recipient_type: 'individual',
+        //     type: 'template',
+        //     template: {
+        //         language: { policy: 'deterministic', code: 'en' },
+        //         namespace: '841f4fb9_7e40_4764_b06a_6c323ebba684',
+        //         components: [{ type: 'body', parameters: [] }],
+        //         name: 'test_template_101'
+        //     },
+        //     to: wa_id,
+        // })
+        // .then(({ data }) => {
+        //     console.log(`Template message sent successfully to ${name} (${wa_id})`);
+        //     console.log(data);
+        // })
+        // .catch(err => {
+        //     console.error(`Failed to send template message to ${name} (${wa_id})`);
+        //     console.error(err);
+        // });
+
+        // res.status(200).send('Message received successfully');
     }
     catch(err){
         console.log(err);
