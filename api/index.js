@@ -47,25 +47,7 @@ app.post('/webhook', (req, res) => {
                 template: {
                     language: { policy: 'deterministic', code: 'en' },
                     namespace: '841f4fb9_7e40_4764_b06a_6c323ebba684',
-                    components: [
-                        {
-                            "type": "HEADER",
-                            "paramters": [
-                                {"type": "image", 
-                                    "image": {"link": "https://scontent.whatsapp.net/v/t61.29466-34/431153528_750083723772534_5351568329922462307_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=s4C1FFuootkQ7kNvgE67Wer&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&oh=01_Q5AaIKayvWiveBkBqNdqb53_dm0vBhVpSOHjXuGeBwQX_24k&oe=66A35EFB" }}
-                            ],
-                            // "format": "IMAGE",
-                            // "example": {
-                            // "header_handle": [
-                            //     "https://scontent.whatsapp.net/v/t61.29466-34/431153528_750083723772534_5351568329922462307_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=s4C1FFuootkQ7kNvgE67Wer&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&oh=01_Q5AaIKayvWiveBkBqNdqb53_dm0vBhVpSOHjXuGeBwQX_24k&oe=66A35EFB"
-                            // ]
-                            // }
-                        },
-                        {
-                            "type": "BODY",
-                            "parameters": []
-                        }
-                    ],
+                    components: [{ type: 'body', parameters: [] }],
                     name: 'test_template_101'
                 },
                 to: wa_id
