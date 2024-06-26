@@ -30,7 +30,7 @@ async function fetchMessages() {
         messageDiv.innerHTML = `
             <strong>Name:</strong> ${msg.name}<br>
             <strong>Wa_id:</strong> ${msg.wa_id}<br>
-            <strong>Timestamp:</strong> ${new Date(parseInt(msg.timestamp) * 1000)}<br>
+            <strong>Timestamp:</strong> ${msg.timestamp}<br>
             <strong>Body:</strong> ${msg.body}<br><br>
         `;
         messagesDiv.appendChild(messageDiv);

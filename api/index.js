@@ -7,10 +7,10 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-let messages = [];
+let messageList = [];
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.post('/webhook', (req, res) => {
     try{
@@ -23,7 +23,8 @@ app.post('/webhook', (req, res) => {
         const timestamp = message.timestamp;
         const body = message.text.body;
     
-        messages.push({ name, wa_id, timestamp, body });
+        messageList.push({ "name":name, "wa_id":wa_id, "timestamp":timestamp, "body":body });
+        console.log(messageList)
         res.status(200).send('Message received successfully');
     }
     catch(err){
@@ -47,7 +48,7 @@ app.post('/webhook', (req, res) => {
 // });
 
 app.get('/messages', (req, res) => {
-    res.json(messages);
+    res.json(messageList);
 });
 
 app.listen(port, () => {
