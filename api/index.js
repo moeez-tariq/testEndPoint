@@ -13,18 +13,25 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/webhook', (req, res) => {
-    const { contacts, messages } = req.body;
+    try{
+        const { contacts, messages } = req.body;
 
-    const contact = contacts[0];
-    const message = messages[0];
-
-    const name = contact.profile.name;
-    const wa_id = contact.wa_id;
-    const timestamp = message.timestamp;
-    const body = message.text.body;
-
-    messages.push({ name, wa_id, timestamp, body });
-    res.status(200).send('Message received successfully');
+        const contact = contacts[0];
+        const message = messages[0];
+        const name = contact.profile.name;
+        const wa_id = contact.wa_id;
+        const timestamp = message.timestamp;
+        const body = message.text.body;
+    
+        messages.push({ name, wa_id, timestamp, body });
+        res.status(200).send('Message received successfully');
+    }
+    catch(err){
+        console.log(err);
+        res.status(400).send('Invalid message format');
+    }
+    
+    
 });
 
 
