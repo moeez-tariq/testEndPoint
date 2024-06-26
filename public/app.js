@@ -1,7 +1,7 @@
 // public/app.js
 
 async function fetchMessages() {
-    const response = await fetch('/messages');
+    const response = await fetch('/');
     const messages = await response.json();
     const messagesDiv = document.getElementById('messages');
     messagesDiv.innerHTML = '';

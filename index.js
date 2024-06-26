@@ -23,7 +23,7 @@ app.post('/webhook', (req, res) => {
     }
 });
 
-app.get('/messages', (req, res) => {
+app.get('/', (req, res) => {
     res.json(messages);
 });
 
