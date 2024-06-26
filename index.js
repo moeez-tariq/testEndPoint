@@ -12,31 +12,15 @@ let messages = [];
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.post('/webhook', (req, res) => {
-//     const { sender, date, body } = req.body;
-//     if (sender && date && body) {
-//         messages.push({ sender, date, body });
-//         console.log(`Message received from ${sender} on ${date}: ${body}`);
-//         res.status(200).send('Message received');
-//     } else {
-//         res.status(400).send('Invalid message format');
-//     }
-// });
-
 app.post('/webhook', (req, res) => {
-    if (!req.body) {
-        return res.status(400).send('Invalid message format');
+    const { sender, date, body } = req.body;
+    if (sender && date && body) {
+        messages.push({ sender, date, body });
+        console.log(`Message received from ${sender} on ${date}: ${body}`);
+        res.status(200).send('Message received');
+    } else {
+        res.status(400).send('Invalid message format');
     }
-    console.log(req.body);
-    res.status(200).send('Message received');
-    // const { sender, date, body } = req.body;
-    // if (sender && date && body) {
-    //     messages.push({ sender, date, body });
-    //     console.log(`Message received from ${sender} on ${date}: ${body}`);
-    //     res.status(200).send('Message received');
-    // } else {
-    //     res.status(400).send('Invalid message format');
-    // }
 });
 
 app.get('/messages', (req, res) => {
