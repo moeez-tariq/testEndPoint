@@ -75,3 +75,5 @@ setInterval(fetchMessages, 5000);  // Fetch messages every 5 seconds (5000 milli
 
 // setInterval(fetchMessages, 5000);
 // fetchMessages();
+
+

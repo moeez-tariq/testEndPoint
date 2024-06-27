@@ -20,6 +20,10 @@ let messageList = [];
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
+function handlePendingMessages(receivedNumber) {
+    console.log('Handling pending messages for number:', receivedNumber);
+}
+
 // app.post('/webhook', (req, res) => {
 //     try{
 //         const { contacts, messages } = req.body;
@@ -114,6 +118,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 //     res.status(200).send('Message received');
 // });
 
+
+
 app.post('/webhook', (req, res) => {
     // Log the entire request body
     console.log('Received message:');
@@ -125,11 +131,56 @@ app.post('/webhook', (req, res) => {
         console.log(`${key}: ${req.body[key]}`);
     }
 
+    let numberReceived = req.body.Number;
+    let statusReceived = req.body.Status;
+
+    // Assuming numberReceived is a number, convert it to a string
+    numberReceived = numberReceived.toString();
+    numberReceived = '+' + numberReceived;
+    const finalNumber = numberReceived;
+
+    if (statusReceived === 'Pending') {
+        handlePendingMessages(finalNumber);
+        const options = {
+            method: 'POST',
+            url: 'https://apis.cequens.com/conversation/wab/v1/messages/',
+            headers: {
+                accept: 'application/json',
+                'content-type': 'application/json',
+                Authorization: `Bearer ${process.env.AUTH_TOKEN}`
+            },
+            body: {
+                recipient_type: 'individual',
+                type: 'template',
+                template: {
+                    language: { policy: 'deterministic', code: 'en' },
+                    namespace: '841f4fb9_7e40_4764_b06a_6c323ebba684',
+                    components: [{ type: 'body', parameters: [] }],
+                    name: 'test_template_101'
+                },
+                to: finalNumber
+            },
+            json: true
+        };
+    
+        // Send request to Cequens API
+        request(options, function (error, response, body) {
+            if (error) {
+                console.error('Error sending template message:', error);
+                res.status(500).send('Failed to send template message');
+            } else {
+                console.log('Template message sent successfully:', body);
+                res.status(200).send('Message received and template message sent');
+            }
+        });
+    } else if (statusReceived === 'Complete') {
+        console.log(`Message from ${finalNumber} is complete`);
+    }
     // Assuming messageList is defined elsewhere in your application to store messages
     messageList.push(req.body);
 
     // Send a response back to the requester
-    res.status(200).send('Message received');
+    // res.status(200).send('Message received');
 });
 
 
