@@ -166,26 +166,33 @@ app.post('/webhook', (req, res) => {
     for (let key in req.body) {
         console.log(`${key}: ${req.body[key]}`);
     }
+    if (req.body.Type === 'Update') {
+        let numberReceived = req.body.Number;
+        let statusReceived = req.body.Status;
 
-    let numberReceived = req.body.Number;
-    let statusReceived = req.body.Status;
+        // Assuming numberReceived is a number, convert it to a string
+        numberReceived = numberReceived.toString();
+        numberReceived = '+' + numberReceived;
+        const finalNumber = numberReceived;
+        let templateName;
+        if (statusReceived === 'Pending') {
+            templateName = 'test_template_101';
+            handleStatusUpdate(finalNumber, templateName);
+        } else if (statusReceived === 'Complete') {
+            templateName = 'test_template_101';
+            handleStatusUpdate(finalNumber, templateName);
+            // console.log(`Message from ${finalNumber} is complete`);
+        }
+        // Assuming messageList is defined elsewhere in your application to store messages
+        messageList.push(req.body);
 
-    // Assuming numberReceived is a number, convert it to a string
-    numberReceived = numberReceived.toString();
-    numberReceived = '+' + numberReceived;
-    const finalNumber = numberReceived;
-    let templateName;
-    if (statusReceived === 'Pending') {
-        templateName = 'test_template_101';
-        handleStatusUpdate(finalNumber, templateName);
-    } else if (statusReceived === 'Complete') {
-        console.log(`Message from ${finalNumber} is complete`);
+        // Send a response back to the requester
+        res.status(200).send('Message received');
     }
-    // Assuming messageList is defined elsewhere in your application to store messages
-    messageList.push(req.body);
-
-    // Send a response back to the requester
-    res.status(200).send('Message received');
+    else if (req.body.Type === 'Submit') {
+        let numberReceived = req.body.Number;
+        console.log("Number Received: ", numberReceived);
+    }
 });
 
 
