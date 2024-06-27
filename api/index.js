@@ -191,6 +191,8 @@ app.post('/webhook', (req, res) => {
     }
     else if (req.body.Type === 'Submit') { 
         let numberReceived = req.body.Number;
+        templateName = 'test_template_101';
+        handleStatusUpdate(finalNumber, templateName);
         console.log("Number Received: ", numberReceived);
         messageList.push(req.body);
 
