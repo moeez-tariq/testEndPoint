@@ -158,6 +158,15 @@ app.post('/webhook', (req, res) => {
                 namespace: '841f4fb9_7e40_4764_b06a_6c323ebba684',
                 name: 'test_template_101',
                 components: [
+                    // {
+                    // type: 'header',
+                    // parameters: [
+                    //     {
+                    //     type: 'image',
+                    //     image: {link: 'https://qlub.io/wp-content/uploads/2022/09/step-2-5.png'}
+                    //     }
+                    // ]
+                    // },
                     {type: 'body', parameters: []}
                 ]
                 },
