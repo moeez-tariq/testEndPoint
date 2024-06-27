@@ -175,7 +175,7 @@ app.post('/webhook', (req, res) => {
         numberReceived = '+' + numberReceived;
         const finalNumber = numberReceived;
         let templateName;
-        if (statusReceived === 'Pending') {
+        if (statusReceived === 'Approved') {
             templateName = 'test_template_101';
             handleStatusUpdate(finalNumber, templateName);
         } else if (statusReceived === 'Complete') {
@@ -189,9 +189,13 @@ app.post('/webhook', (req, res) => {
         // Send a response back to the requester
         res.status(200).send('Message received');
     }
-    else if (req.body.Type === 'Submit') {
+    else if (req.body.Type === 'Submit') { 
         let numberReceived = req.body.Number;
         console.log("Number Received: ", numberReceived);
+        messageList.push(req.body);
+
+        // Send a response back to the requester
+        res.status(200).send('Message received');
     }
 });
 
