@@ -166,14 +166,16 @@ app.post('/webhook', (req, res) => {
     for (let key in req.body) {
         console.log(`${key}: ${req.body[key]}`);
     }
+
+    let numberReceived = req.body.Number;
+    numberReceived = numberReceived.toString();
+    numberReceived = '+' + numberReceived;
+    const finalNumber = numberReceived;
     if (req.body.Type === 'Update') {
-        let numberReceived = req.body.Number;
         let statusReceived = req.body.Status;
 
         // Assuming numberReceived is a number, convert it to a string
-        numberReceived = numberReceived.toString();
-        numberReceived = '+' + numberReceived;
-        const finalNumber = numberReceived;
+        
         let templateName;
         if (statusReceived === 'Approved') {
             templateName = 'test_template_101';
