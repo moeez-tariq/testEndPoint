@@ -185,6 +185,10 @@ app.post('/webhook', (req, res) => {
             handleStatusUpdate(finalNumber, templateName);
             // console.log(`Message from ${finalNumber} is complete`);
         }
+        else {
+            templateName = 'test_template_101';
+            handleStatusUpdate(finalNumber, templateName);
+        }
         // Assuming messageList is defined elsewhere in your application to store messages
         messageList.push(req.body);
 
